@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <div class="hero_area">
+
+    <div class="hero_bg_box" style="background: linear-gradient(130deg, #231a6f, #0f054c);">
+      <div class="bg_img_box">
+        <!-- <img src="images/hero-bg.png" alt=""> -->
+      </div>
+    </div>
+  
+   
+
+  <header class="header_section">
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg custom_nav-container ">
+        <a class="navbar-brand" href="index.html">
+          <span>
+            Equity.
+          </span>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav  ">
+            <li class="nav-item ">
+              <a class="nav-link" href="index.html">Home </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="about.html"> About <span class="sr-only">(current)</span> </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="team.html">Team</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+        </nav>
+    </div>
+    </header>
+
+    
+
+<head>
+ 
+  <title>Tesla News (Past 10 Days)</title>
+  
+  
+
+</head>
+
+<!-- bootstrap core css -->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+<!-- fonts style -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<!--owl slider stylesheet -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+<!-- font awesome style -->
+<link href="css/font-awesome.min.css" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="css/style.css" rel="stylesheet" />
+<!-- responsive style -->
+<link href="css/responsive.css" rel="stylesheet" />
+
+
+
+<section class="about_section layout_padding" style="margin-top: -665px;">
+  <div class="container  ">
+    <div class="heading_container heading_center">
+    
+  <!-- <style>
+    body {
+      font-family: sans-serif;
+    background: url("images/hero-bg.png");
+    color: white;
+    }
+    .date-header {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .news-item {
+      margin-bottom: 20px;
+    }
+    .news-title {
+      font-weight: bold;
+    }
+  </style> -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <h1>Tesla News (Past 10 Days)</h1>
+  <div id="news-container"></div>
+  <script>
+    const apiKey = "fEXfEZJvjHIqShoQdjiCacUziJ8yKYQeTbuAfBeu"; // Replace with your Marketaux API token
+    const companySymbol = "TSLA";
+    const baseUrl = "https://api.marketaux.com/v1/news/all?filter_entities=true&language=en&api_token=";
+    
+
+    
+            
+
+    function getNewsData(publishedOn) {
+      const url = baseUrl + apiKey + "&symbols=" + companySymbol + "&published_on=" + publishedOn;
+      return axios.get(url)
+        .then(response => response.data.data)
+        .catch(error => {
+          console.error("Error fetching news:", error);
+          return [];
+        });
+    }
+
+    function displayNews(news) {
+      const container = document.getElementById("news-container");
+
+      if (news.length === 0) {
+        const message = document.createElement("p");
+        message.textContent = "No news found for Tesla on this date.";
+        container.appendChild(message);
+        return;
+      }
+
+      const dateHeader = document.createElement("h2");
+      dateHeader.classList.add("date-header");
+      dateHeader.textContent = news[0]["published_on"];
+      container.appendChild(dateHeader);
+
+      for (const article of news) {
+        const newsItem = document.createElement("div");
+        newsItem.classList.add("news-item");
+
+        const title = document.createElement("h3");
+        title.classList.add("news-title");
+        title.textContent = article["title"];
+        newsItem.appendChild(title);
+
+        const description = document.createElement("p");
+        description.textContent = article["description"];
+        newsItem.appendChild(description);
+
+        const sentimentScore = document.createElement("p");
+        sentimentScore.textContent = "Sentiment Score: " + article["entities"][0]["sentiment_score"];
+        newsItem.appendChild(sentimentScore);
+
+        container.appendChild(newsItem);
+      }
+    }
+
+    async function fetchAndDisplayNews() {
+      for (let dayOffset = 0; dayOffset < 10; dayOffset++) {
+        const today = new Date();
+        const publishedOn = today.setDate(today.getDate() - dayOffset);
+        const formattedDate = new Date(publishedOn).toISOString().split('T')[0]; // YYYY-MM-DD format
+
+        const news = await getNewsData(formattedDate);
+        displayNews(news);
+      }
+    }
+
+   
+    fetchAndDisplayNews();
+ 
+  </script>
+</body>
+</div>
+</div>
+<div class="read_more_btn">
+  <a href="tsla_graph.html"  style="color: white;">
+    Graphical Representation
+  </a>
+</div>
+</section>
+
+
+</html>
